@@ -48,9 +48,6 @@ def remote_import(user, dis_name, first_name, quota):
     else:
         result = stdout.readlines()
         error = stderr.readlines()
-        # print(result)
-        # print(error)
-        # print('>>>>>>>>>>>')
         if result[-1] == '0\n':
             print('用户: {} 导入成功！'.format(user))
             sucess.append(user)
