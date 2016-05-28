@@ -17,6 +17,8 @@ user  dis_name  first_name  quota
 保存为excel格式和本程序放在同一目录下即可。
 '''
 
+# 定义存放导入成功和失败的列表
+
 sucess = []
 wrong = []
 
