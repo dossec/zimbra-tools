@@ -10,6 +10,8 @@ zimbra 批量导入用户,excel包含四个字段:
 
 地址  显示名称    姓   邮件限额
 
+user  dis_name  first_name  quota
+
 以上四个字段都是文本格式
 
 保存为excel格式和本程序放在同一目录下即可。
@@ -18,7 +20,7 @@ zimbra 批量导入用户,excel包含四个字段:
 sucess = []
 wrong = []
 
-def remote_import(user, dis_name, first_name, quote):
+def remote_import(user, dis_name, first_name, quota):
     ssh_host = '192.168.1.67'
     ssh_user = 'user'
     ssh_pass = 'password'
@@ -37,7 +39,7 @@ def remote_import(user, dis_name, first_name, quote):
     try:
         stdin, stdout, stderr = ssh.exec_command(
             '/opt/zimbra/bin/zmprov ca {}@domain.com password displayName {} sn {} zimbraMailQuota {};echo $?' \
-                .format(user, dis_name, first_name, quote))
+                .format(user, dis_name, first_name, quota))
         # print(stdout.read())
     except:
         print('命令执行错误！')
@@ -80,16 +82,16 @@ def import_user():
     col2 = table.col_values(1)
     col3 = table.col_values(2)
     col4 = table.col_values(3)
-    for user, dis_name, first_name, quote in zip(col1, col2, col3, col4):
+    for user, dis_name, first_name, quota in zip(col1, col2, col3, col4):
         # print(user,'\t' ,dis_name,'\t' ,first_name)
         data = {
             '帐号': user,
             '显示名称': dis_name,
             '姓名': first_name,
-            '限额': str(quote)
+            '限额': str(quota)
         }
         print('现在导入数据 >>>', data)
-        remote_import(user, dis_name, first_name, quote)
+        remote_import(user, dis_name, first_name, quota)
         print('\n')
     print('###### 本次计划导入的数据：{} 条 ######'.format(nrows))
     print('###### 其中导入成功的数据：{} 条 ######'.format(len(sucess)))
